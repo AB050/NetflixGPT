@@ -18,4 +18,6 @@
 # NetflixGPT
 
 - SearchBar
-- MovieSuggestion
+- # MovieSuggestion
+
+# NetflixGPT
