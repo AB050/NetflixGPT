@@ -4,14 +4,17 @@ import { checkValidData } from "../utility/Validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../components/firebase";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isSignInForm, setSignInForm] = useState(true);
   const name = useRef();
   const email = useRef(null);
   const password = useRef(null);
+  const navigate = useNavigate();
   const [errormessage, seterrormessage] = useState();
 
   const toggleSignInForm = (e) => {
@@ -34,6 +37,16 @@ const Login = () => {
       )
         .then(async (userCredential) => {
           const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://picsum.photos/536/354",
+          })
+            .then(() => {
+              navigate("/browse");
+            })
+            .catch((error) => {
+              seterrormessage(errormessage);
+            });
           console.log(user);
         })
         .catch((error) => {
@@ -51,6 +64,7 @@ const Login = () => {
         .then(async (userCredential) => {
           const user = userCredential.user;
           console.log(user);
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
